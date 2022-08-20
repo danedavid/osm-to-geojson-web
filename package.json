@@ -1,0 +1,17 @@
+{
+  "name": "@danedavid/osm-to-geojson-web",
+  "version": "1.0.0",
+  "description": "Web application to view OSM data in GeoJSON format",
+  "main": "server.js",
+  "scripts": {
+    "start-server": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
