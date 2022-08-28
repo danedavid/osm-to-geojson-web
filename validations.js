@@ -15,6 +15,14 @@ module.exports = {
             validator.isLatLong(`${minLat},${minLong}`) &&
             validator.isLatLong(`${maxLat},${maxLong}`)
           );
+        })
+        .custom((bboxValue) => {
+          const [minLong, minLat, maxLong, maxLat] = bboxValue.split(',');
+
+          return (
+            parseFloat(minLat) < parseFloat(maxLat) &&
+            parseFloat(minLong) < parseFloat(maxLong)
+          );
         }),
     ],
   },

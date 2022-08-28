@@ -7,6 +7,9 @@ const request = supertest(server);
 const badRequestTestCases = [
   { url: '/geojson-data?bbox=-89,51.28' },
   { url: '/geojson-data' },
+  { url: '/geojson-data?bbox=,,,' },
+  { url: '/geojson-data?bbox=100,100,100,100' }, // invalid value for latitude
+  { url: '/geojson-data?bbox=1.23,1.44,1.13,1.34' }, // min > max
 ];
 
 describe('GeoJSON Endpoint', () => {
