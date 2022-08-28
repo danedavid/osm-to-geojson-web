@@ -4,10 +4,10 @@ const osmtogeojson = require('osmtogeojson');
 
 const { osmApi } = require('./api');
 
-const geoJsonService = async ({ latMin, longMin, latMax, longMax }) => {
+const geoJsonService = async ({ longMin, latMin, longMax, latMax }) => {
   try {
     const stringified = queryString.stringify({
-      bbox: `${latMin},${longMin},${latMax},${longMax}]`,
+      bbox: `${longMin},${latMin},${longMax},${latMax}]`,
     });
 
     const response = await axios.get(osmApi(stringified));

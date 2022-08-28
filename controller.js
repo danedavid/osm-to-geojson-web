@@ -3,13 +3,13 @@ const service = require('./service');
 const handleRequest = async (req, res) => {
   try {
     const { bbox } = req.query;
-    const [lat_min, long_min, lat_max, long_max] = bbox.split(',');
+    const [longMin, latMin, longMax, latMax] = bbox.split(',');
 
     const ret = await service.geoJsonService({
-      latMin: lat_min,
-      longMin: long_min,
-      latMax: lat_max,
-      longMax: long_max,
+      longMin,
+      latMin,
+      longMax,
+      latMax,
     });
 
     return res.send(ret);
