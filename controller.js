@@ -1,4 +1,5 @@
 const service = require('./service');
+const { BadRequestError } = require('./errors');
 
 const handleRequest = async (req, res) => {
   try {
@@ -14,8 +15,11 @@ const handleRequest = async (req, res) => {
 
     return res.send(ret);
   } catch (err) {
+    if (err instanceof BadRequestError) {
+      return res.status(400).send({ error: err.message });
+    }
     console.log('Error in controller: ', err);
-    return res.send({ error: 'Internal Servor Error' }).status(500);
+    return res.status(500).send({ error: 'Internal Servor Error' });
   }
 };
 

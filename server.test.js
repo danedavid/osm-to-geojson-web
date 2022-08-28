@@ -10,6 +10,7 @@ const badRequestTestCases = [
   { url: '/geojson-data?bbox=,,,' },
   { url: '/geojson-data?bbox=100,100,100,100' }, // invalid value for latitude
   { url: '/geojson-data?bbox=1.23,1.44,1.13,1.34' }, // min > max
+  { url: '/geojson-data?bbox=-179.489,1.22,-0.516,9.286' }, // large area
 ];
 
 describe('GeoJSON Endpoint', () => {
