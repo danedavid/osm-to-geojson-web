@@ -14,6 +14,7 @@ const View = ({ data }) => {
         onAdd={false}
         onDelete={false}
         enableClipboard={false}
+        displayDataTypes={false}
         collapsed={2}
         theme="eighties"
         src={data}
