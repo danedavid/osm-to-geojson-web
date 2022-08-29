@@ -1,39 +1,111 @@
-import React from 'react';
-import { FormField, TextInput, Box, Button } from 'grommet';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import {
+  Form as GrommetForm,
+  FormField,
+  TextInput,
+  Box,
+  Button,
+  Text,
+} from 'grommet';
 
-const Form = () => {
+const Form = ({ onSubmit }) => {
+  const [missingError, setMissingError] = useState(false);
+
+  const onFormSubmit = () => {
+    const minLong = document.getElementById('min_long').value;
+    const minLat = document.getElementById('min_lat').value;
+    const maxLong = document.getElementById('max_long').value;
+    const maxLat = document.getElementById('max_lat').value;
+
+    const allPresent = minLong && minLat && maxLong && maxLat;
+
+    if (!allPresent) {
+      setMissingError(true);
+    }
+
+    const values = {
+      minLong: parseFloat(minLong),
+      minLat: parseFloat(minLat),
+      maxLong: parseFloat(maxLong),
+      maxLat: parseFloat(maxLat),
+    };
+
+    onSubmit(values);
+  };
+
+  const onInputChange = () => {
+    setMissingError(false);
+  };
+
   return (
-    <Box pad="xsmall">
-      <Box direction="row" align="center" pad="small">
-        <Box direction="column" align="center" pad="small">
-          <FormField label="Min Long">
-            <TextInput placeholder="type here" />
-          </FormField>
-        </Box>
-
-        <Box direction="column" alignContent="between" gap="xlarge">
-          <Box>
-            <FormField label="Min Lat">
-              <TextInput placeholder="type here" />
+    <GrommetForm onSubmit={onFormSubmit}>
+      <Box pad="xsmall">
+        <Box direction="row" align="center" pad="small">
+          <Box direction="column" align="center" pad="small">
+            <FormField label="Min Long" htmlFor="min_long">
+              <TextInput
+                type="number"
+                placeholder="type here"
+                id="min_long"
+                onChange={onInputChange}
+              />
             </FormField>
           </Box>
-          <Box>
-            <FormField label="Max Lat">
-              <TextInput placeholder="type here" />
+
+          <Box direction="column" alignContent="between" gap="xlarge">
+            <Box>
+              <FormField label="Min Lat" htmlFor="min_lat">
+                <TextInput
+                  type="number"
+                  placeholder="type here"
+                  id="min_lat"
+                  onChange={onInputChange}
+                />
+              </FormField>
+            </Box>
+            <Box>
+              <FormField label="Max Lat" htmlFor="max_lat">
+                <TextInput
+                  type="number"
+                  placeholder="type here"
+                  id="max_lat"
+                  onChange={onInputChange}
+                />
+              </FormField>
+            </Box>
+          </Box>
+
+          <Box direction="column" align="center" pad="small">
+            <FormField label="Max Long" htmlFor="max_long">
+              <TextInput
+                type="number"
+                placeholder="type here"
+                id="max_long"
+                onChange={onInputChange}
+              />
             </FormField>
           </Box>
         </Box>
 
-        <Box direction="column" align="center" pad="small">
-          <FormField label="Max Long">
-            <TextInput placeholder="type here" />
-          </FormField>
-        </Box>
+        {missingError && (
+          <Text color="status-error" role="dialog">
+            Some values are missing
+          </Text>
+        )}
+
+        <Button type="submit" primary alignSelf="center" label="Submit" />
       </Box>
-
-      <Button primary alignSelf="center" label="Submit" />
-    </Box>
+    </GrommetForm>
   );
+};
+
+Form.defaultProps = {
+  onSubmit: () => {},
+};
+
+Form.propTypes = {
+  onSubmit: PropTypes.func,
 };
 
 export default Form;

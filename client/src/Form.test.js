@@ -4,10 +4,10 @@ import Form from './Form';
 
 test('should render form', () => {
   render(<Form />);
-  const input1 = screen.getByLabelText('min_long');
-  const input2 = screen.getByLabelText('min_lat');
-  const input3 = screen.getByLabelText('max_long');
-  const input4 = screen.getByLabelText('max_lat');
+  const input1 = screen.getByLabelText('Min Long');
+  const input2 = screen.getByLabelText('Min Lat');
+  const input3 = screen.getByLabelText('Max Long');
+  const input4 = screen.getByLabelText('Max Lat');
 
   const submitButton = screen.getByRole('button');
   expect(input1).toBeVisible();
@@ -17,39 +17,47 @@ test('should render form', () => {
   expect(submitButton).toBeVisible();
 });
 
-test('submit without all 4 values should display error', () => {
+test('submit without all 4 values should display error', async () => {
   const user = userEvent.setup();
 
   render(<Form />);
-  const input1 = screen.getByLabelText('min_long');
+  const input1 = screen.getByLabelText('Min Long');
   const submitButton = screen.getByRole('button');
   fireEvent.change(input1, { target: { value: 23 } });
-  user.click(submitButton);
+  await user.click(submitButton);
 
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
   expect(dialog).toHaveTextContent(/missing/i);
 });
 
-test('should invoke onSubmit on succesful submit', () => {
+test('should invoke onSubmit on succesful submit', async () => {
   const user = userEvent.setup();
   const onSubmit = jest.fn();
 
   render(<Form onSubmit={onSubmit} />);
 
-  const input1 = screen.getByLabelText('min_long');
-  const input2 = screen.getByLabelText('min_lat');
-  const input3 = screen.getByLabelText('max_long');
-  const input4 = screen.getByLabelText('max_lat');
+  const input1 = screen.getByLabelText('Min Long');
+  const input2 = screen.getByLabelText('Min Lat');
+  const input3 = screen.getByLabelText('Max Long');
+  const input4 = screen.getByLabelText('Max Lat');
   const submitButton = screen.getByRole('button');
-  const dialog = screen.getByRole('dialog');
+  const dialog = screen.queryByRole('dialog');
 
-  fireEvent.change(input1, { target: { value: 23 } });
-  fireEvent.change(input2, { target: { value: 1.12 } });
-  fireEvent.change(input3, { target: { value: 23.56 } });
-  fireEvent.change(input4, { target: { value: 2 } });
-  user.click(submitButton);
+  const inputValues = {
+    minLong: 23,
+    minLat: 1.12,
+    maxLong: 23.56,
+    maxLat: 2,
+  };
 
-  expect(dialog).not.toBeVisible();
-  expect(onSubmit).toHaveBeenCalled();
+  fireEvent.change(input1, { target: { value: inputValues.minLong } });
+  fireEvent.change(input2, { target: { value: inputValues.minLat } });
+  fireEvent.change(input3, { target: { value: inputValues.maxLong } });
+  fireEvent.change(input4, { target: { value: inputValues.maxLat } });
+  await user.click(submitButton);
+
+  expect(dialog).toBeNull();
+  expect(onSubmit.mock.calls.length).toBe(1);
+  expect(onSubmit.mock.calls[0][0]).toStrictEqual(inputValues);
 });
