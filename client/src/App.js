@@ -1,22 +1,21 @@
-import { useEffect } from 'react';
-import axios from 'axios';
-import './App.css';
+import { Grommet, Page, PageContent, Heading } from 'grommet';
+import Form from './Form';
+import View from './View';
 
-function App() {
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get(
-          '/geojson-data?bbox=13.336284,52.478776,13.336784,52.479029'
-        );
-        console.log('response: ', res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, []);
-
-  return <div className="App">React App</div>;
-}
+const App = () => {
+  return (
+    <Grommet plain>
+      <Page kind="narrow">
+        <PageContent background="light-3" pad={{ vertical: 'small' }}>
+          <Heading margin="none" alignSelf="center">
+            OSM to GeoJSON
+          </Heading>
+          <Form />
+          <View />
+        </PageContent>
+      </Page>
+    </Grommet>
+  );
+};
 
 export default App;
