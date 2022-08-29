@@ -46,7 +46,8 @@ const Form = ({ onSubmit }) => {
             <FormField label="Min Long" htmlFor="min_long">
               <TextInput
                 type="number"
-                placeholder="type here"
+                step="any"
+                placeholder="-"
                 id="min_long"
                 onChange={onInputChange}
               />
@@ -58,7 +59,8 @@ const Form = ({ onSubmit }) => {
               <FormField label="Min Lat" htmlFor="min_lat">
                 <TextInput
                   type="number"
-                  placeholder="type here"
+                  step="any"
+                  placeholder="-"
                   id="min_lat"
                   onChange={onInputChange}
                 />
@@ -68,7 +70,8 @@ const Form = ({ onSubmit }) => {
               <FormField label="Max Lat" htmlFor="max_lat">
                 <TextInput
                   type="number"
-                  placeholder="type here"
+                  step="any"
+                  placeholder="-"
                   id="max_lat"
                   onChange={onInputChange}
                 />
@@ -80,7 +83,8 @@ const Form = ({ onSubmit }) => {
             <FormField label="Max Long" htmlFor="max_long">
               <TextInput
                 type="number"
-                placeholder="type here"
+                step="any"
+                placeholder="-"
                 id="max_long"
                 onChange={onInputChange}
               />
@@ -88,13 +92,18 @@ const Form = ({ onSubmit }) => {
           </Box>
         </Box>
 
+        <Button type="submit" primary alignSelf="center" label="Submit" />
+
         {missingError && (
-          <Text color="status-error" role="dialog">
+          <Text
+            textAlign="center"
+            margin="medium"
+            color="status-error"
+            role="dialog"
+          >
             Some values are missing
           </Text>
         )}
-
-        <Button type="submit" primary alignSelf="center" label="Submit" />
       </Box>
     </GrommetForm>
   );
