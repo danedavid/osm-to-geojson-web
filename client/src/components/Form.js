@@ -8,6 +8,7 @@ import {
   Button,
   Text,
 } from 'grommet';
+import { sampleValues } from '../constants';
 
 const Form = ({ onSubmit }) => {
   const [missingError, setMissingError] = useState(false);
@@ -32,6 +33,13 @@ const Form = ({ onSubmit }) => {
     };
 
     onSubmit(values);
+  };
+
+  const fillSampleValues = () => {
+    document.getElementById('min_long').value = sampleValues.minLong;
+    document.getElementById('min_lat').value = sampleValues.minLat;
+    document.getElementById('max_long').value = sampleValues.maxLong;
+    document.getElementById('max_lat').value = sampleValues.maxLat;
   };
 
   const onInputChange = () => {
@@ -92,7 +100,22 @@ const Form = ({ onSubmit }) => {
           </Box>
         </Box>
 
-        <Button type="submit" primary alignSelf="center" label="Submit" />
+        <Box justify="center" direction="row" gap="small">
+          <Button
+            type="submit"
+            primary
+            alignSelf="center"
+            aria-label="submit"
+            label="Submit"
+          />
+          <Button
+            secondary
+            alignSelf="center"
+            aria-label="fill values"
+            label="Fill Sample Values"
+            onClick={fillSampleValues}
+          />
+        </Box>
 
         {missingError && (
           <Text

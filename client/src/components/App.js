@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Grommet, Page, PageContent, Heading } from 'grommet';
 import Form from './Form';
 import View from './View';
-import { fetchGeoJSON } from './service';
+import { fetchGeoJSON } from '../service';
 
 const App = () => {
   const [data, setData] = useState(null);
