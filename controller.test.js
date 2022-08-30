@@ -17,6 +17,7 @@ describe('handleRequest', () => {
   beforeEach(() => {
     responseSend.mockClear();
     responseStatus.mockClear();
+    service.geoJsonService.mockReset();
   });
 
   it('responds with values', async () => {

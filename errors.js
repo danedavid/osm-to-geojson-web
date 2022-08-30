@@ -1,9 +1,14 @@
-function BadRequestError(message) {
-  this.name = 'BadRequestError';
-  this.message = message;
-}
+class BadRequestError extends Error {
+  constructor() {
+    super();
 
-BadRequestError.prototype = Error;
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, BadRequestError);
+    }
+
+    this.name = 'BadRequestError';
+  }
+}
 
 module.exports = {
   BadRequestError,
