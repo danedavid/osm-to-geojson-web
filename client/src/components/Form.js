@@ -7,10 +7,11 @@ import {
   Box,
   Button,
   Text,
+  Spinner,
 } from 'grommet';
 import { sampleValues } from '../constants';
 
-const Form = ({ onSubmit }) => {
+const Form = ({ onSubmit, loading }) => {
   const [missingError, setMissingError] = useState(false);
 
   const onFormSubmit = () => {
@@ -106,7 +107,14 @@ const Form = ({ onSubmit }) => {
             primary
             alignSelf="center"
             aria-label="submit"
-            label="Submit"
+            disabled={loading}
+            label={
+              loading ? (
+                <Spinner color="light-1" role="progressbar" />
+              ) : (
+                'Submit'
+              )
+            }
           />
           <Button
             secondary
@@ -134,10 +142,12 @@ const Form = ({ onSubmit }) => {
 
 Form.defaultProps = {
   onSubmit: () => {},
+  loading: false,
 };
 
 Form.propTypes = {
   onSubmit: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 export default Form;

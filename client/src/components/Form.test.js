@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Form from './Form';
 import { sampleValues } from '../constants';
@@ -87,4 +87,15 @@ test('should fill sample values', async () => {
 
   expect(onSubmit.mock.calls.length).toBe(1);
   expect(onSubmit.mock.calls[0][0]).toStrictEqual(sampleValues);
+});
+
+test('display spinner on loading', async () => {
+  render(<Form loading />);
+
+  const submitButton = screen.getByRole('button', { name: 'submit' });
+  const spinner = within(submitButton).queryByRole('progressbar');
+
+  expect(submitButton).toHaveTextContent('');
+  expect(submitButton).toBeDisabled();
+  expect(spinner).toBeVisible();
 });
