@@ -6,7 +6,10 @@
   "scripts": {
     "start:server": "nodemon --config nodemon.config.js",
     "start:client": "cd client && npm start",
+    "build:client": "cd client && npm run build",
+    "prod:server": "node index.js",
     "dev": "npm-run-all -p start:client start:server",
+    "prod": "npm-run-all -s build:client prod:server",
     "test:server": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "test:client": "cd client && npm test"
   },
