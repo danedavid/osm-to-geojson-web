@@ -1,7 +1,19 @@
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Form from './Form';
-import { sampleValues } from '../constants';
+import { sampleValues, ERROR_MESSAGES } from '../constants';
+
+const validationTestCases = [
+  { values: { minLong: 23, maxLong: 24 }, message: ERROR_MESSAGES.exists },
+  {
+    values: { minLong: 100.1, minLat: 101.1, maxLong: 100.2, maxLat: 102.1 },
+    message: ERROR_MESSAGES.invalid,
+  },
+  {
+    values: { minLong: 1, minLat: 2, maxLong: 2, maxLat: 1 },
+    message: ERROR_MESSAGES.minMax,
+  },
+];
 
 test('should render form', () => {
   render(<Form />);
@@ -100,4 +112,32 @@ test('display spinner on loading', async () => {
   expect(submitButton).toHaveTextContent('');
   expect(submitButton).toBeDisabled();
   expect(spinner).toBeVisible();
+});
+
+test('form validation error messages', async () => {
+  const user = userEvent.setup();
+  const onSubmit = jest.fn();
+  render(<Form onSubmit={onSubmit} />);
+
+  const input1 = screen.getByLabelText('Min Long');
+  const input2 = screen.getByLabelText('Min Lat');
+  const input3 = screen.getByLabelText('Max Long');
+  const input4 = screen.getByLabelText('Max Lat');
+
+  const submitButton = screen.getByRole('button', { name: 'submit' });
+
+  for (const tc of validationTestCases) {
+    const { values, message } = tc;
+    fireEvent.change(input1, { target: { value: values.minLong } });
+    fireEvent.change(input2, { target: { value: values.minLat } });
+    fireEvent.change(input3, { target: { value: values.maxLong } });
+    fireEvent.change(input4, { target: { value: values.maxLat } });
+
+    await user.click(submitButton);
+
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toBeVisible();
+    expect(dialog).toHaveTextContent(message);
+    expect(onSubmit.mock.calls.length).toBe(0);
+  }
 });

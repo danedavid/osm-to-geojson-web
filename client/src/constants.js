@@ -4,3 +4,9 @@ export const sampleValues = {
   maxLong: 13.336784,
   maxLat: 52.479029,
 };
+
+export const ERROR_MESSAGES = {
+  exists: 'Some values are missing',
+  invalid: 'Invalid Lat/Long Values',
+  minMax: 'Minimum should be greater than Maximum',
+};

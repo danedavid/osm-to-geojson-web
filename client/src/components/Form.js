@@ -10,9 +10,10 @@ import {
   Spinner,
 } from 'grommet';
 import { sampleValues } from '../constants';
+import validations from '../validations';
 
 const Form = ({ onSubmit, loading }) => {
-  const [missingError, setMissingError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
 
   const onFormSubmit = () => {
     const minLong = document.getElementById('min_long').value;
@@ -20,11 +21,17 @@ const Form = ({ onSubmit, loading }) => {
     const maxLong = document.getElementById('max_long').value;
     const maxLat = document.getElementById('max_lat').value;
 
-    const allPresent = minLong && minLat && maxLong && maxLat;
-
-    if (!allPresent) {
-      setMissingError(true);
-      return;
+    for (const { validate, errMessage } of Object.values(validations)) {
+      const invalid = !validate({
+        minLong,
+        minLat,
+        maxLong,
+        maxLat,
+      });
+      if (invalid) {
+        setErrorMessage(errMessage);
+        return;
+      }
     }
 
     const values = {
@@ -45,7 +52,7 @@ const Form = ({ onSubmit, loading }) => {
   };
 
   const onInputChange = () => {
-    setMissingError(false);
+    setErrorMessage(false);
   };
 
   return (
@@ -126,14 +133,14 @@ const Form = ({ onSubmit, loading }) => {
           />
         </Box>
 
-        {missingError && (
+        {errorMessage && (
           <Text
             textAlign="center"
             margin="medium"
             color="status-error"
             role="dialog"
           >
-            Some values are missing
+            {errorMessage}
           </Text>
         )}
       </Box>
