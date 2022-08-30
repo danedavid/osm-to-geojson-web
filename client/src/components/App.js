@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Grommet, Page, PageContent, Heading } from 'grommet';
+import { Grommet, Page, PageContent, Heading, Notification } from 'grommet';
 import Form from './Form';
 import View from './View';
 import { fetchGeoJSON } from '../service';
@@ -7,6 +7,7 @@ import { fetchGeoJSON } from '../service';
 const App = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState('');
 
   const onSubmit = async (values) => {
     try {
@@ -15,7 +16,11 @@ const App = () => {
       setData(data);
     } catch (err) {
       console.error(err);
-      // notify error
+      if (err?.response?.status === 400) {
+        setServerError('Bad Request');
+      } else {
+        setServerError('Unknown Error');
+      }
     } finally {
       setLoading(false);
     }
@@ -23,6 +28,19 @@ const App = () => {
 
   return (
     <Grommet plain>
+      {serverError && (
+        <Notification
+          toast={{
+            autoClose: true,
+            position: 'bottom-right',
+          }}
+          status="critical"
+          title="Server Error"
+          message={serverError}
+          onClose={() => setServerError('')}
+        />
+      )}
+
       <Page kind="narrow">
         <PageContent background="light-3" pad={{ vertical: 'small' }}>
           <Heading margin="none" alignSelf="center">

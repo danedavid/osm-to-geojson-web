@@ -20,8 +20,9 @@ test('should render form', () => {
 
 test('submit without all 4 values should display error', async () => {
   const user = userEvent.setup();
+  const onSubmit = jest.fn();
 
-  render(<Form />);
+  render(<Form onSubmit={onSubmit} />);
   const input1 = screen.getByLabelText('Min Long');
   const submitButton = screen.getByRole('button', { name: 'submit' });
   fireEvent.change(input1, { target: { value: 23 } });
@@ -30,6 +31,7 @@ test('submit without all 4 values should display error', async () => {
   const dialog = screen.getByRole('dialog');
   expect(dialog).toBeVisible();
   expect(dialog).toHaveTextContent(/missing/i);
+  expect(onSubmit.mock.calls.length).toBe(0);
 });
 
 test('should invoke onSubmit on succesful submit', async () => {

@@ -24,6 +24,7 @@ const Form = ({ onSubmit, loading }) => {
 
     if (!allPresent) {
       setMissingError(true);
+      return;
     }
 
     const values = {

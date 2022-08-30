@@ -7,6 +7,6 @@ export const fetchGeoJSON = async ({ minLong, minLat, maxLong, maxLat }) => {
     );
     return res.data;
   } catch (err) {
-    return Promise.reject(`Error in fetchGeoJSON: ${err}`);
+    return Promise.reject(err);
   }
 };
