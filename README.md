@@ -23,6 +23,11 @@
 2. `npm run start:client`
 3. Open [http://localhost:3000](http://localhost:3000)
 
+## Run tests
+
+- Server: `npm run test:server`
+- Client: `npm run test:client`
+
 ## Tech Stack
 
 - Express
